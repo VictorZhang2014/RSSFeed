@@ -15,6 +15,7 @@ public class RFArtDetailsPopupView: UIView {
     let artistNameLabel = UILabel()
     let collectionNameLabel = UILabel()
     let genresLabel = UILabel()
+    let kindLabel = UILabel()
     let releaseDateLabel = UILabel()
     
     var currentModel: RFFeedItemModel?
@@ -53,7 +54,7 @@ public class RFArtDetailsPopupView: UIView {
             $0.centerY.equalToSuperview()
             $0.left.equalTo(30)
             $0.right.equalTo(-30)
-            $0.height.equalTo(backgroundContentWidth + 150)
+            $0.height.equalTo(backgroundContentWidth + 180)
         }
         
         // 主图
@@ -109,13 +110,24 @@ public class RFArtDetailsPopupView: UIView {
             $0.width.equalToSuperview()
             $0.height.equalTo(25)
         }
+        
+        kindLabel.textAlignment = .center
+        kindLabel.textColor = UIColor.gray
+        kindLabel.font = UIFont.italicSystemFont(ofSize: 14)
+        backgroundContent.addSubview(kindLabel)
+        kindLabel.snp.makeConstraints {
+            $0.top.equalTo(genresLabel.snp.bottom).offset(margin)
+            $0.centerX.equalToSuperview()
+            $0.width.equalToSuperview()
+            $0.height.equalTo(25)
+        }
     
         releaseDateLabel.textAlignment = .center
         releaseDateLabel.textColor = UIColor.gray
         releaseDateLabel.font = UIFont.systemFont(ofSize: 14)
         backgroundContent.addSubview(releaseDateLabel)
         releaseDateLabel.snp.makeConstraints {
-            $0.top.equalTo(genresLabel.snp.bottom).offset(margin)
+            $0.top.equalTo(kindLabel.snp.bottom).offset(margin)
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview()
             $0.height.equalTo(25)
@@ -161,6 +173,9 @@ public class RFArtDetailsPopupView: UIView {
                 }
             }
             genresLabel.text = "Genres: " + genresStr
+        }
+        if let kind = model?.kind {
+            kindLabel.text = "Kind: " + kind
         }
         if let releaseDate = model?.releaseDate {
             releaseDateLabel.text = "Release Date: " + releaseDate
