@@ -22,8 +22,6 @@ public class RFArtDetailsPopupView: UIView {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closePopupView)))
-        
         let popupView = UIView()
         self.addSubview(popupView)
         popupView.snp.makeConstraints {
@@ -32,6 +30,7 @@ public class RFArtDetailsPopupView: UIView {
         
         // 透明层
         let translucentView = UIView()
+        translucentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closePopupView)))
         translucentView.backgroundColor = UIColor.black
         translucentView.alpha = 0.5
         popupView.addSubview(translucentView)
@@ -65,7 +64,7 @@ public class RFArtDetailsPopupView: UIView {
             $0.width.height.equalTo(imageViewWidth)
         }
     
-        
+        artistNameLabel.isUserInteractionEnabled = true
         artistNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openArtistHomePage)))
         artistNameLabel.textAlignment = .center
         artistNameLabel.textColor = UIColor.blue
@@ -173,6 +172,13 @@ public class RFArtDetailsPopupView: UIView {
     }
     
     @objc func openArtistHomePage() {
-        
+        if let _currentModel = self.currentModel {
+            NotificationCenter.default.post(name: Notification.Name(RFArtDetailsPopupView.getArtistNotificationName()), object: nil, userInfo: [ "currentModel" : _currentModel ])
+        }
+        closePopupView()
+    }
+    
+    public static func getArtistNotificationName() -> String {
+        return "kArtistNotificationName"
     }
 }

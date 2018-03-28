@@ -30,6 +30,7 @@ public class RFFeedListViewController: UIViewController, UICollectionViewDataSou
         return _collectionView
     }()
     
+    var activityIndicator: UIActivityIndicatorView?
     var feedModel: RFFeedModel?
     var currentPageNumber: Int = 10
     var isRequesting: Bool = false
@@ -40,6 +41,8 @@ public class RFFeedListViewController: UIViewController, UICollectionViewDataSou
         setupViews()
         
         request(with: currentPageNumber)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(openArtistPage(notification:)), name: Notification.Name(RFArtDetailsPopupView.getArtistNotificationName()), object: nil)
     }
     
     func setupViews() {
@@ -48,6 +51,32 @@ public class RFFeedListViewController: UIViewController, UICollectionViewDataSou
         self.view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        activityIndicator = UIActivityIndicatorView()
+        activityIndicator?.activityIndicatorViewStyle = .gray
+        activityIndicator?.startAnimating()
+        self.view.addSubview(activityIndicator!)
+        activityIndicator?.snp.makeConstraints {
+            $0.centerX.equalTo(self.view.snp.centerX)
+            $0.centerY.equalTo(self.view.snp.centerY)
+            $0.width.height.equalTo(30)
+        }
+    }
+    
+    @objc func openArtistPage(notification: NSNotification) {
+        let userInfo = notification.userInfo
+        if let _userInfo = userInfo {
+            let currentModel: RFFeedItemModel? = _userInfo["currentModel"] as? RFFeedItemModel
+            if let _currentModel = currentModel {
+                
+                let webViewVC = RFWebViewViewController()
+                webViewVC.artistName = _currentModel.artistName
+                webViewVC.artistUrl = _currentModel.url
+                let nav = UINavigationController(rootViewController: webViewVC)
+                self.present(nav, animated: true, completion: nil)
+            }
+
         }
     }
     
@@ -58,6 +87,10 @@ public class RFFeedListViewController: UIViewController, UICollectionViewDataSou
         
         isRequesting = true
         RFRequestManager.getArtistList(with: "/us/apple-music/hot-tracks/all/\(pageNumber)/explicit.json") { (model, error) in
+            if let indicator = self.activityIndicator {
+                indicator.stopAnimating()
+                self.activityIndicator = nil
+            }
             if let _error = error {
                 self.alert(with: _error.localizedDescription)
                 self.isRequesting = false
