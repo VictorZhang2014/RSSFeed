@@ -1,0 +1,31 @@
+PODS:
+  - Alamofire (4.6.0)
+  - FLAnimatedImage (1.0.12)
+  - PINCache (2.3)
+  - PINRemoteImage (2.1.4):
+    - PINRemoteImage/FLAnimatedImage (= 2.1.4)
+  - PINRemoteImage/Core (2.1.4):
+    - PINCache (>= 2.1)
+  - PINRemoteImage/FLAnimatedImage (2.1.4):
+    - FLAnimatedImage (>= 1.0)
+    - PINRemoteImage/Core
+  - SnapKit (4.0.0)
+  - SwiftyJSON (4.0.0)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.6)
+  - PINRemoteImage (~> 2.1.4)
+  - SnapKit (~> 4.0.0)
+  - SwiftyJSON (~> 4.0.0)
+
+SPEC CHECKSUMS:
+  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  PINCache: ce36ed282031b92fc7733ffe831f474ff80fddc2
+  PINRemoteImage: 4ac4011c5caefd6befd99758e09becede05d3226
+  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+
+PODFILE CHECKSUM: 3538bdfbeef77ae5fa2cdc7e299899f5c11fd22c
+
+COCOAPODS: 1.4.0
